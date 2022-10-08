@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.fjar.app_mysql.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_categoria"
+        android:name="com.fjar.app_mysql.ui.categorias.Categorias"
+        android:label="@string/menu_categorias"
+        tools:layout="@layout/fragment_categorias" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_producto"
         android:name="com.fjar.app_mysql.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_Productos"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>
