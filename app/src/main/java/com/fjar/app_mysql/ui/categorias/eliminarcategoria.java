@@ -3,7 +3,6 @@ package com.fjar.app_mysql.ui.categorias;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,14 +16,30 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.fjar.app_mysql.MySingleton;
 import com.fjar.app_mysql.R;
 import com.fjar.app_mysql.categoria_CRUD;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class eliminarcategoria {
     private Dialog myDialog;
     private AlertDialog.Builder dialogo;
     private boolean validaInput = false;
     private String codigo;
+    private Spinner spn;
+
 
 
     private SQLiteDatabase db = null;
@@ -48,21 +63,24 @@ public class eliminarcategoria {
         });
 
         //Spinner
-        Spinner spn = (Spinner) myDialog.findViewById(R.id.spinnerCategoriasDelete);
-        ArrayAdapter<CharSequence> adaptador = new ArrayAdapter(cont, android.R.layout.simple_spinner_item, CRUD.obtenerCategoriaSpinner(cont));
-        spn.setAdapter(adaptador);
+        spn = (Spinner) myDialog.findViewById(R.id.spinnerCategoriasDelete);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, obtenerCategoriaSpinner(myDialog.getContext()));
+        //spn.setAdapter(adapter);
+        CRUD.obtenerCategoriaSpinner(myDialog.getContext(), spn);
+        //Toast.makeText(cont, "mensaje" + obtenerCategoriaSpinner(myDialog.getContext()), Toast.LENGTH_SHORT).show();
 
         spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                String item = (String) adaptador.getItem(position);
-                Toast.makeText(view.getContext(), "El item es" + item, Toast.LENGTH_SHORT).show();
-                if(position != 0 ){
-                   //cat.setIdCategoria(CRUD.obtenerCategorias(cont).get(position -1).getIdCategoria());
-                   cat.setIdCategoria(Integer.parseInt(spn.getSelectedItem().toString()));
-                   Log.e("Mensaje Id categoria", "" + cat.getIdCategoria());
-                }
+                String item = (String) spn.getSelectedItem().toString();
 
+                    if(position != 0) {
+                        String s[] = item.split("-");
+                        cat.setIdCategoria(Integer.parseInt(s[0].trim()));
+                        //Toast.makeText(view.getContext(), "El item es" + cat.getIdCategoria(), Toast.LENGTH_SHORT).show();
+                        Log.e("Mensaje Id categoria", "" + cat.getIdCategoria());
+
+                    }
 
             }
 
@@ -75,25 +93,22 @@ public class eliminarcategoria {
         btn_eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "El item del spinner es: " + spn.getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
-                String cod = "";
-                DtoCategoria cat = new DtoCategoria();
-                if((et_cod.getText().toString().length() != 0) ){
-                    cod = et_cod.getText().toString();
-                    cat.setIdCategoria(Integer.parseInt(cod));
-                    validaInput = true;
+                Toast.makeText(v.getContext(), "El item del spinner es: " + spn.getSelectedItem(), Toast.LENGTH_SHORT).show();
 
-                }else if(cat.getIdCategoria() != 0) {
-                    validaInput = true;
+
+                if((cat.getIdCategoria() != 0) || (et_cod.getText().toString().length() != 0)){
+                    if((et_cod.getText().toString().length() > 0) && (cat.getIdCategoria() > 0)){
+                        Toast.makeText(cont, "¡Utilice solo uno de los métodos para eliminar!", Toast.LENGTH_SHORT).show();
+                        validaInput = false;
+                    }else {
+                        validaInput = true;
+                    }
                 }else {
-                    et_cod.setError("Campo obligatorio");
                     Toast.makeText(cont, "Eliga una categoria o ingrese el codigo", Toast.LENGTH_SHORT).show();
                 }
 
                 if(validaInput){
                     CRUD.eliminarcategoria(v.getContext(), cat.getIdCategoria());
-                }else{
-                    Toast.makeText(context, "No ha especificado la categoria a eliminar", Toast.LENGTH_SHORT).show();
                 }
             }
         });

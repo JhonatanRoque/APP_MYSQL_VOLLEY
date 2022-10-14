@@ -19,7 +19,13 @@
 
     <fragment
         android:id="@+id/nav_producto"
-        android:name="com.fjar.app_mysql.ui.slideshow.SlideshowFragment"
+        android:name="com.fjar.app_mysql.ui.productos.Productos"
         android:label="@string/menu_Productos"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_productos" />
+
+    <fragment
+        android:id="@+id/nav_ListCategoria"
+        android:name="com.fjar.app_mysql.ui.categorias.CategoriasList"
+        android:label="ListarCategorias"
+        tools:layout="@layout/fragment_categorias_list" />
 </navigation>

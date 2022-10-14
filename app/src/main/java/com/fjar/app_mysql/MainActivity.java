@@ -7,11 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
+import com.fjar.app_mysql.ui.categorias.CategoriasList;
 import com.fjar.app_mysql.ui.categorias.eliminarcategoria;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_categoria, R.id.nav_producto)
+                R.id.nav_home, R.id.nav_categoria, R.id.nav_producto, R.id.nav_ListCategoria)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -92,10 +94,16 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.eliminarCategoria){
             eliminarcategoria eliminar = new eliminarcategoria();
             eliminar.eliminar(this);
+        } else if(id == R.id.listarCategoria){
+           getSupportFragmentManager().beginTransaction().addToBackStack(null);
+           getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main, new CategoriasList()).commit();
+
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public boolean onSupportNavigateUp() {

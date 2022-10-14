@@ -13,4 +13,10 @@
         android:title="@string/categoriaAction_Delete"
         app:showAsAction="never"
         android:visible="false"/>
+    <item
+        android:id="@+id/listarCategoria"
+        android:orderInCategory="100"
+        android:title="@string/categoriaAction_Read"
+        app:showAsAction="never"
+        android:visible="false"/>
 </menu>

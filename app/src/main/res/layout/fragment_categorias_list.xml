@@ -6,9 +6,15 @@
     tools:context=".ui.categorias.CategoriasList">
 
     <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ID - Nombre - Estado"/>
     <ListView
+        android:id="@+id/listarCategorias"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
         />
 
 </FrameLayout>

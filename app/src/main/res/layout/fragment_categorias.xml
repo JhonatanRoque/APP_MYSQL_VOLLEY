@@ -67,7 +67,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:spinnerMode="dropdown"
-        android:entries="@array/valorspinner"
+        android:entries="@array/valorEstado"
         style="@style/Widget.AppCompat.DropDownItem.Spinner"
         />
 
