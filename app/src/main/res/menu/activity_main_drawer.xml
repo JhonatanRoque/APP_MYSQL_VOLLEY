@@ -4,21 +4,41 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_categoria"
-            android:icon="@drawable/id_category"
-            android:title="@string/menu_categorias" />
-        <item
-            android:id="@+id/nav_producto"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_Productos" />
-        <item
-            android:id="@+id/nav_ListCategoria"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Listar categorias" />
+            android:title="Categorias"
+            >
+            <menu>
+                <item
+                    android:id="@+id/nav_categoria"
+                    android:icon="@drawable/id_category"
+                    android:title="@string/menu_categorias" />
+
+                <item
+                    android:id="@+id/nav_ListCategoria"
+                    android:icon="@drawable/ic_menu_slideshow"
+                    android:title="Listar categorias" />
+
+                <item
+                    android:id="@+id/nav_ModCategoria"
+                    android:icon="@drawable/edit"
+                    android:title="Modificar categoria" />
+            </menu>
+        </item>
     </group>
+    <item
+        android:title="Productos"
+        >
+        <menu>
+            <item
+                android:id="@+id/nav_producto"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/menu_Productos" />
+        </menu>
+
+    </item>
 </menu>

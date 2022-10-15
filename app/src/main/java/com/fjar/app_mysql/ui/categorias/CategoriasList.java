@@ -80,9 +80,7 @@ public class CategoriasList extends Fragment {
         super.onPrepareOptionsMenu(menu);
         //Llamar a las opciones de menu de este fragment
         MenuItem EliminarItem = menu.findItem(R.id.eliminarCategoria);
-        MenuItem VerItem = menu.findItem(R.id.listarCategoria);
         EliminarItem.setVisible(true);
-        VerItem.setVisible(true);
     }
 
 }
