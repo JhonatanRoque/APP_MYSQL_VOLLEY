@@ -16,17 +16,11 @@
         android:layout_height="match_parent"
         android:layout_marginTop="40dp"
         android:text="ID - NOMBRE - DESCRIPCION- STOCK - ESTADO" />
-    <ScrollView
+    <ListView
+        android:id="@+id/listarProductos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="80dp"
-        >
-        <ListView
-            android:id="@+id/listarProductos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </ScrollView>
+        />
 
 </FrameLayout>
