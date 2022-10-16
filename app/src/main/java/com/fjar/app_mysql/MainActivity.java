@@ -9,6 +9,7 @@ import android.view.Menu;
 
 import com.fjar.app_mysql.ui.categorias.CategoriasList;
 import com.fjar.app_mysql.ui.categorias.eliminarcategoria;
+import com.fjar.app_mysql.ui.productos.eliminarProducto;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -98,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(id == R.id.eliminarCategoria){
             eliminarcategoria eliminar = new eliminarcategoria();
+            eliminar.eliminar(this);
+        }else  if(id == R.id.eliminarProducto){
+            eliminarProducto eliminar = new eliminarProducto();
             eliminar.eliminar(this);
         }
 

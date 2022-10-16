@@ -13,4 +13,9 @@
         android:title="@string/categoriaAction_Delete"
         app:showAsAction="never"
         android:visible="false"/>
+    <item
+        android:id="@+id/eliminarProducto"
+        android:orderInCategory="100"
+        android:title="Eliminar producto"
+        app:showAsAction="never"/>
 </menu>

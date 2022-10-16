@@ -1,6 +1,8 @@
 package com.fjar.app_mysql;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fjar.app_mysql.ui.categorias.DtoCategoria;
+import com.fjar.app_mysql.ui.productos.DtoProductos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,39 +76,62 @@ public class categoria_CRUD {
 
     public void eliminarcategoria(final Context context, final int id_categoria) {
         String url = "https://franciscowebtw.000webhostapp.com/service2020/eliminarCategoria.php";
-        StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+        ListView lvProd = new ListView(context);
+        obtenerProdCategoria(context, id_categoria, lvProd);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setIcon(R.drawable.ic_delete);
+        builder.setTitle("Warning");
+        builder.setMessage("¿Esta seguro de borrar el registro? \n Código:" +
+                id_categoria + "\n Productos asociados: \n" );
+        builder.setView(lvProd);
+        builder.setCancelable(false);
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject requestJSON = new JSONObject(response.toString());
-                    String estado = requestJSON.getString("estado");
-                    String mensaje = requestJSON.getString("mensaje");
-                    if(estado.equals("1")){
-                        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(context, "Registro almacenado en MySQL.", Toast.LENGTH_SHORT).show();
-                    }else if(estado.equals("2")){
-                        Toast.makeText(context, "Error"+mensaje, Toast.LENGTH_SHORT).show();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject requestJSON = new JSONObject(response.toString());
+                            String estado = requestJSON.getString("estado");
+                            String mensaje = requestJSON.getString("mensaje");
+                            if (estado.equals("1")) {
+                                Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, "Registro almacenado en MySQL.", Toast.LENGTH_SHORT).show();
+                            } else if (estado.equals("2")) {
+                                Toast.makeText(context, "Error" + mensaje, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(context, "No se pudo guardar. \n" + "Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                        Map<String, String> map = new HashMap<>();
+                        map.put("Content-Type", "application/json; charset=utf-8");
+                        map.put("Accept", "application/json");
+                        map.put("id_categoria", String.valueOf(id_categoria));
+                        return map;
+                    }
+                };
+                MySingleton.getInstance(context).addToRequestQueue(request);
             }
-        }, new Response.ErrorListener() {
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(context, "No se pudo guardar. \n" +"Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            public void onClick(DialogInterface dialogInterface, int i) {
+
             }
-        }) {
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //En este método se colocan o se setean los valores a recibir por el fichero *.php
-                Map<String, String> map = new HashMap<>();
-                map.put("Content-Type", "application/json; charset=utf-8");
-                map.put("Accept", "application/json");
-                map.put("id_categoria", String.valueOf(id_categoria));
-                return map;
-            }
-        };
-        MySingleton.getInstance(context).addToRequestQueue(request);
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();;
+
     }
 
     //Método para obtener todas las categorias
@@ -153,6 +179,68 @@ public class categoria_CRUD {
                 Map<String, String> map = new HashMap<>();
                 map.put("Content-Type", "application/json; charset=utf-8");
                 map.put("Accept", "application/json");
+                return map;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(request);
+
+    }
+
+    public void obtenerProdCategoria (final Context context, int idCat, ListView lv) {
+        //Creamos un array en el cual guardaremos cada una de los datos que vendran de nuestra API
+        ArrayList<String> productos = new ArrayList<String>();
+        //Objeto para almacenar cada categoria
+
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/obtenerProdDeCategoria.php";
+        StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    JSONArray peticionJSON = new JSONArray(response.toString());
+                    productos.add("ID - Producto - Estado");
+                    Log.e("Tamaño del array ", String.valueOf(peticionJSON.length()));
+                    Toast.makeText(context, "Tamaño de array " + String.valueOf(peticionJSON.length()), Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < peticionJSON.length(); i ++){
+                        JSONObject requestJSON = peticionJSON.getJSONObject(i);
+                        DtoProductos prod = new DtoProductos();
+                        String idProducto = requestJSON.getString("idProducto");
+                        String nombreProducto = requestJSON.getString("nombreProducto");
+                        String Stock = requestJSON.getString("Stock");
+                        String precio = requestJSON.getString("precio");
+                        String estado = requestJSON.getString("estado");
+                        //Añadimos los datos a nuestro objeto producto
+                        prod.setIdProducto(Integer.parseInt(idProducto));
+                        prod.setNombreProducto(nombreProducto);
+                        prod.setStock(Float.parseFloat(Stock));
+                        prod.setPrecio(Float.parseFloat(precio));
+                        prod.setEstadoProducto(Integer.parseInt(estado));
+                        productos.add(prod.getIdProducto() + " - " + prod.getNombreProducto() + " - " + prod.getEstadoProducto());
+                        Toast.makeText(context, "Productos encontrados " + productos.get(i), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Productos encontrados " + productos.get(i+1), Toast.LENGTH_SHORT).show();
+                        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, productos);
+                        lv.setAdapter(adaptador);
+
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, "No se pudo obtener los productos. \n" +"Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/json; charset=utf-8");
+                map.put("Accept", "application/json");
+                map.put("id_categoria", String.valueOf(idCat));
                 return map;
             }
         };
@@ -208,6 +296,8 @@ public class categoria_CRUD {
         };
         MySingleton.getInstance(context).addToRequestQueue(request);
     }
+
+
 
     public void modificarcategoria(final Context context, DtoCategoria categoria) {
         String url = "https://franciscowebtw.000webhostapp.com/service2020/modificarCategoria.php";

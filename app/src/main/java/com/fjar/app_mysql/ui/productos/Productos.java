@@ -1,18 +1,25 @@
 package com.fjar.app_mysql.ui.productos;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -179,6 +186,8 @@ String unidad = et_unidadmedida.getText().toString();*/
         });
         return view;
     }
+
+
     private String timedate(){
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
@@ -238,6 +247,8 @@ String unidad = et_unidadmedida.getText().toString();*/
         });
         MySingleton.getInstance(context).addToRequestQueue(stringRequest);
     }
+
+
 
     private void save_productos(final Context context, final String id_prod,
                                 final String nom_prod, final String des_prod,
@@ -310,6 +321,112 @@ String unidad = et_unidadmedida.getText().toString();*/
         }
         return lista;
     }
+        //Método para eliminar productos
+        public void eliminarProducto(final Context context, final int id_cod) {
+            String url = "https://franciscowebtw.000webhostapp.com/service2020/eliminarProductos.php";
+            //ListView lvProd = new ListView(context);
+            //obtenerProdCategoria(context, id_categoria, lvProd);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setIcon(R.drawable.ic_delete);
+            builder.setTitle("Warning");
+            builder.setMessage("¿Esta seguro de borrar el producto? \n Código:" +
+                    id_cod );
+            //builder.setView(lvProd);
+            builder.setCancelable(false);
+            builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject requestJSON = new JSONObject(response.toString());
+                                String estado = requestJSON.getString("estado");
+                                String mensaje = requestJSON.getString("mensaje");
+                                if (estado.equals("1")) {
+                                    Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(context, "Registro almacenado en MySQL.", Toast.LENGTH_SHORT).show();
+                                } else if (estado.equals("2")) {
+                                    Toast.makeText(context, "Error" + mensaje, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(context, "No se pudo Eliminar. \n" + "Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                            Map<String, String> map = new HashMap<>();
+                            map.put("Content-Type", "application/json; charset=utf-8");
+                            map.put("Accept", "application/json");
+                            map.put("codigo", String.valueOf(id_cod));
+                            return map;
+                        }
+                    };
+                    MySingleton.getInstance(context).addToRequestQueue(request);
+                }
+            });
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();;
+
+        }
+    public void obtenerProductoSpinner (final Context context, Spinner spinn) {
+        //Creamos un array en el cual guardaremos cada una de los datos que vendran de nuestra API
+        ArrayList<String> producto = new ArrayList<>();
+        //ArrayAdapter<String> categoriasList;
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/obtenerProductos.php";
+        StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    JSONArray requestJSON = new JSONArray(response.toString());
+                    Log.e("tamaño de json", String.valueOf(requestJSON.length()));
+                    producto.add("Seleccione un producto");
+                    for (int i = 0; i < requestJSON.length(); i ++){
+                        JSONObject requestobjectJSON = requestJSON.getJSONObject(i);
+                        String idCategoria = requestobjectJSON.getString("id");
+                        String nombreCategoria = requestobjectJSON.getString("nombreProducto");
+
+                        producto.add(idCategoria + " - " + nombreCategoria);
+                        Log.e("consola", producto.get(i).toString() );
+                    }
+                    Log.e("Tamaño de categoria", "" + producto.toArray().length);
+
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, producto);
+                    spinn.setAdapter(adapter);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, "No se pudo obtener las categorias \n" +"Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/json; charset=utf-8");
+                map.put("Accept", "application/json");
+                return map;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
 
 }
