@@ -36,8 +36,12 @@
         <menu>
             <item
                 android:id="@+id/nav_producto"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@drawable/id_category"
                 android:title="@string/menu_Productos" />
+            <item
+                android:id="@+id/nav_productoList"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Listar productos" />
         </menu>
 
     </item>

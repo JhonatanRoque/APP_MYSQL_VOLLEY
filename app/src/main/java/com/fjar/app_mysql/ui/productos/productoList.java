@@ -18,6 +18,7 @@ import com.fjar.app_mysql.R;
  */
 public class productoList extends Fragment {
     private ListView lvProd;
+    Productos CRUD = new Productos();
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -66,6 +67,7 @@ public class productoList extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_producto_list, container, false);
         lvProd = (ListView) root.findViewById(R.id.listarProductos);
+        CRUD.obtenerProductosLista(root.getContext(), lvProd);
 
         return root;
     }

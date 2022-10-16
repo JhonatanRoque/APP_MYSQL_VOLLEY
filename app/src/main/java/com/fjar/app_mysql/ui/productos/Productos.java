@@ -428,5 +428,59 @@ String unidad = et_unidadmedida.getText().toString();*/
         };
         MySingleton.getInstance(context).addToRequestQueue(request);
     }
+    //Método para obtener todos los productos
+    public void obtenerProductosLista (final Context context, ListView lv) {
+        //Creamos un array en el cual guardaremos cada una de los datos que vendran de nuestra API
+        ArrayList<String> Producto = new ArrayList<String>();
+
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/obtenerProductos.php";
+        StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    JSONArray peticionJSON = new JSONArray(response.toString());
+
+                    for (int i = 0; i <= peticionJSON.length(); i ++){
+                        JSONObject requestJSON = peticionJSON.getJSONObject(i);
+                        DtoProductos prod = new DtoProductos();
+                        String id = requestJSON.getString("id");
+                        String nombreProd = requestJSON.getString("nombreProducto");
+                        String DescProd = requestJSON.getString("descripcion");
+                        String stock = requestJSON.getString("stock");
+                        String estado = requestJSON.getString("estado");
+                        //Añadimos los datos a nuestro objeto categoria
+                        prod.setIdProducto(Integer.parseInt(id));
+                        prod.setNombreProducto(nombreProd);
+                        prod.setDescProducto(DescProd);
+                        prod.setStock(Float.parseFloat(stock));
+                        prod.setEstadoProducto(Integer.parseInt(estado));
+                        Producto.add(prod.getIdProducto() + " - " + prod.getNombreProducto() + " - " + prod.getDescProducto() + " - " + prod.getStock() + " - " + prod.getEstadoProducto());
+
+                        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, Producto);
+                        lv.setAdapter(adaptador);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, "No se pudo obtener las categorias \n" +"Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/json; charset=utf-8");
+                map.put("Accept", "application/json");
+                return map;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(request);
+
+    }
 
 }

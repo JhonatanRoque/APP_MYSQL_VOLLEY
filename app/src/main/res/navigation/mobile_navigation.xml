@@ -22,6 +22,11 @@
         android:name="com.fjar.app_mysql.ui.productos.Productos"
         android:label="@string/menu_Productos"
         tools:layout="@layout/fragment_productos" />
+    <fragment
+        android:id="@+id/nav_productoList"
+        android:name="com.fjar.app_mysql.ui.productos.productoList"
+        android:label="Listar productos"
+        tools:layout="@layout/fragment_producto_list" />
 
     <fragment
         android:id="@+id/nav_ListCategoria"
