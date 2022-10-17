@@ -15,42 +15,39 @@
         android:theme="@style/Theme.APP_MySQL"
         tools:targetApi="31">
         <activity
-            android:name=".RecuperarContrasena"
+            android:name=".ui.session.RecuperarContrasena"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".RecuperarUsuario"
+            android:name=".ui.session.RecuperarUsuario"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Register"
+            android:name=".ui.session.Register"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".InitSession"
-            android:exported="false">
+            android:name=".ui.session.InitSession"
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity
-            android:name=".Session"
-            android:exported="false"
-            android:label="@string/title_activity_session"
-            android:theme="@style/Theme.APP_MySQL.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <activity
             android:name=".MainActivity2"
             android:exported="true">
@@ -67,11 +64,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
