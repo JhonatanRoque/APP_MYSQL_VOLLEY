@@ -42,6 +42,10 @@
                 android:id="@+id/nav_productoList"
                 android:icon="@drawable/ic_menu_slideshow"
                 android:title="Listar productos" />
+            <item
+                android:id="@+id/nav_ModProducto"
+                android:icon="@drawable/edit"
+                android:title="Modificar producto" />
         </menu>
 
     </item>

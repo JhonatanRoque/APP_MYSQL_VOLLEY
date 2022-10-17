@@ -39,4 +39,9 @@
         android:label="Modificar categoria"
         tools:layout="@layout/fragment_modificar_categorias" />
 
+    <fragment
+        android:id="@+id/nav_ModProducto"
+        android:name="com.fjar.app_mysql.ui.productos.ModificarProductos"
+        android:label="Modificar producto"
+        tools:layout="@layout/fragment_modificar_productos" />
 </navigation>

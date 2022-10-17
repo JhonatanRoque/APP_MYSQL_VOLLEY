@@ -109,7 +109,7 @@ public class Productos extends Fragment {
             }
         });
 //Llamo al método para que muestre los datos de la busqueda al carga la actividad.
-                        fk_categorias(getContext());
+                        fk_categorias(getContext(), sp_fk_categoria);
 //ArrayAdapter<String> adaptador = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, obtenerListaCategorias());
 //ArrayAdapter<String> adaptador =new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item, elementos);
 //sp_fk_categoria.setAdapter(adaptador);
@@ -195,7 +195,7 @@ String unidad = et_unidadmedida.getText().toString();*/
         return fecha;
     }
     //public ArrayList<dto_categorias> fk_categorias(final Context context){
-    public void fk_categorias(final Context context){
+    public void fk_categorias(final Context context, Spinner spn){
         listaCategorias = new ArrayList<DtoCategoria>();
         lista = new ArrayList<String>();
         lista.add("Seleccione Categoria");
@@ -222,11 +222,11 @@ String unidad = et_unidadmedida.getText().toString();*/
                         obj_categorias = new DtoCategoria(id_categoria, nombre_categoria, estado_categoria);
 
                         listaCategorias.add(obj_categorias);
-                                lista.add(listaCategorias.get(i).getIdCategoria()+" ~ "+listaCategorias.get(i).getNombreCategoria());
-                                ArrayAdapter<String> adaptador =new ArrayAdapter<String> (getContext(),android.R.layout.simple_spinner_item,
+                                lista.add(listaCategorias.get(i).getIdCategoria()+" - "+listaCategorias.get(i).getNombreCategoria());
+                                ArrayAdapter<String> adaptador =new ArrayAdapter<String> (context,android.R.layout.simple_spinner_item,
                                 lista);
 //Cargo los datos en el Spinner
-                        sp_fk_categoria.setAdapter(adaptador);
+                        spn.setAdapter(adaptador);
                         //Muestro datos en LogCat para verificar larespuesta obtenida desde el servidor.
                                 Log.i("Id Categoria",
                                         String.valueOf(obj_categorias.getIdCategoria()));
@@ -481,6 +481,142 @@ String unidad = et_unidadmedida.getText().toString();*/
         };
         MySingleton.getInstance(context).addToRequestQueue(request);
 
+    }
+
+    //Método para modificar producto
+    public void update_productos(final Context context, final String id_prod,
+                                final String nom_prod, final String des_prod,
+                                final String stock, final String precio, final
+                                String uni_medida, final String estado_prod,
+                                final String categoria){
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/modificarProductos.php";
+        StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject requestJSON = new JSONObject(response.toString());
+                    String estado = requestJSON.getString("estado");
+                    String mensaje = requestJSON.getString("mensaje");
+                    if(estado.equals("1")){
+                        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "Registro almacenado en MySQL.", Toast.LENGTH_SHORT).show();
+                    }else if(estado.equals("2")){
+                        Toast.makeText(context, ""+mensaje,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, "No se puedo guardar. \n" +
+                        "Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            protected Map<String, String> getParams() throws AuthFailureError
+            {
+//En este método se colocan o se setean los valores a recibir por el fichero *.php
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/json; charset=utf-8; ");
+                map.put("Accept", "application/json");
+                map.put("id_prod", id_prod);
+                map.put("nom_prod", nom_prod);
+                map.put("des_prod", des_prod);
+                map.put("stock", stock);
+                map.put("precio", precio);
+                map.put("uni_medida", uni_medida);
+                map.put("estado_prod", estado_prod);
+                map.put("categoria", categoria);
+                return map;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+
+
+    //Metodo para obtener los datos de mi producto
+    public void obtenerProductoIndividual(final Context context, final int id_cod, final View v){
+
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/obtenerProductoIndividual.php";
+        DtoProductos prod = new DtoProductos();
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray Array = new JSONArray(response.toString());
+                    for(int i = 0; i < Array.length(); i ++){
+                        JSONObject requestJSON = Array.getJSONObject(i);
+                        String idProducto = requestJSON.getString("id");
+                        String nombre = requestJSON.getString("nombreProducto");
+                        String descripcion = requestJSON.getString("descripcion");
+                        String stock = requestJSON.getString("stock");
+                        String precio = requestJSON.getString("precio");
+                        String UnMd = requestJSON.getString("UnidadMedida");
+                        String estado = requestJSON.getString("estado");
+                        String categoria = requestJSON.getString("categoria");
+                        String fecha = requestJSON.getString("fecha");
+                        //Guardamos los datos en nuestra variable producto
+                        prod.setIdProducto(Integer.parseInt(idProducto));
+                        prod.setNombreProducto(nombre);
+                        prod.setDescProducto(descripcion);
+                        prod.setStock(Float.parseFloat(stock));
+                        prod.setPrecio(Float.parseFloat(precio));
+                        prod.setUnidadMedida(UnMd);
+                        prod.setEstadoProducto(Integer.parseInt(estado));
+                        prod.setCategoria(Integer.parseInt(categoria));
+                        prod.setFechaEntrada(fecha);
+                        //hacemos el llamado a los elementos
+                        EditText edtNombre = (EditText) v.findViewById(R.id.et_nombre_prod);
+                        EditText edtDesc = (EditText) v.findViewById(R.id.et_descripcion);
+                        EditText edtStock = (EditText) v.findViewById(R.id.et_stock);
+                        EditText edtPrecio = (EditText) v.findViewById(R.id.et_precio);
+                        EditText edtUnMd = (EditText) v.findViewById(R.id.et_unidadmedida);
+                        Spinner spnEstado = (Spinner) v.findViewById(R.id.sp_estadoProductos);
+                        Spinner spnCategoria = (Spinner) v.findViewById(R.id.sp_fk_categoria);
+                        TextView tvFecha = (TextView) v.findViewById(R.id.tv_fechahora);
+
+                        //establecemos los datos a su respectivo elemento
+                        edtNombre.setText(prod.getNombreProducto());
+                        edtDesc.setText(prod.getDescProducto());
+                        edtStock.setText(String.valueOf(prod.getStock()));
+                        edtPrecio.setText(String.valueOf(prod.getPrecio()));
+                        edtUnMd.setText(prod.getUnidadMedida());
+                        Toast.makeText(context, "Estado del producto " + prod.getIdProducto() + prod.getEstadoProducto(), Toast.LENGTH_SHORT).show();
+                        if(prod.getEstadoProducto() == 1){
+                            spnEstado.setSelection(1);
+                        }else if(prod.getEstadoProducto() == 0){
+                            spnEstado.setSelection(2);
+                        }
+
+                        spnCategoria.setSelection(0);
+
+                        tvFecha.setText(prod.getFechaEntrada());
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, "No se pudo obtener el dato. \n" + "Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/json; charset=utf-8");
+                map.put("Accept", "application/json");
+                map.put("codigo", String.valueOf(id_cod));
+                return map;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(request);
     }
 
 }

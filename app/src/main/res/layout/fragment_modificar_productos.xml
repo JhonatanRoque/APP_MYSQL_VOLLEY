@@ -12,27 +12,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_id"
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:textColorHint="@color/gray">
-                <EditText
-                    android:id="@+id/et_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:drawablePadding="5dp"
-                    android:paddingLeft="1dp"
-                    android:ems="10"
-                    android:hint="* Id Producto"
-                    android:inputType="text"
-                    android:textColor="#03168B"
-                    android:textSize="14dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="Eliga el producto que desea modificar"
+                android:layout_margin="20dp"
+                />
+            <Spinner
+                android:id="@+id/spnIdProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_nombre_prod"
                 android:layout_width="match_parent"
