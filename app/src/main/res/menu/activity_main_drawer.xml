@@ -49,4 +49,21 @@
         </menu>
 
     </item>
+    <item
+        android:title="Cuenta"
+        >
+        <menu>
+            <item
+                android:id="@+id/nav_User"
+                android:icon="@drawable/user"
+                android:title="Configuracioón "
+                />
+
+            <item
+                android:id="@+id/nav_Cerrar_session"
+                android:icon="@drawable/salir"
+                android:title="Salir" />
+        </menu>
+
+    </item>
 </menu>

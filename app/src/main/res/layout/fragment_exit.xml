@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.session.Exit">
+
+   <androidx.appcompat.widget.LinearLayoutCompat
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+
+       android:layout_marginLeft="20dp"
+       android:layout_marginRight="20dp"
+       android:layout_gravity="center"
+       android:orientation="vertical"
+       android:gravity="center"
+       >
+       <androidx.appcompat.widget.AppCompatImageView
+           android:layout_width="match_parent"
+           android:layout_height="100dp"
+           android:src="@drawable/user"
+           />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="¿Desea cerrar su sessioón?"
+           android:textAlignment="center"
+           android:textSize="24dp"
+           />
+       <androidx.appcompat.widget.LinearLayoutCompat
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:gravity="center"
+           >
+           <androidx.appcompat.widget.AppCompatButton
+               android:id="@+id/btnSalirSession"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Si"
+               />
+           <androidx.appcompat.widget.AppCompatButton
+               android:id="@+id/btnCancelar"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Cancelar"
+               />
+       </androidx.appcompat.widget.LinearLayoutCompat>
+   </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>
