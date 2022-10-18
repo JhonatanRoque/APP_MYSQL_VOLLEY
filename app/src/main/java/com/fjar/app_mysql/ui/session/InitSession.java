@@ -11,7 +11,7 @@ import com.fjar.app_mysql.MainActivity;
 import com.fjar.app_mysql.R;
 
 public class InitSession extends AppCompatActivity {
-    private Button btnRegistrar, btnIniciar;
+    private Button btnRegistrar, btnIniciar, btnRecuperarUsuario, btnRecuperarContrasena;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class InitSession extends AppCompatActivity {
         //Instanciamos nuestros componentes
         btnRegistrar = (Button) findViewById(R.id.btnRegistrarse);
         btnIniciar = (Button) findViewById(R.id.btnIngresar);
+        btnRecuperarUsuario = (Button) findViewById(R.id.btnRecuperarUsuario);
 
         //Funcion de los botones
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +35,13 @@ public class InitSession extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent vista = new Intent(InitSession.this, MainActivity.class);
+                startActivity(vista);
+            }
+        });
+        btnRecuperarUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent vista = new Intent(InitSession.this, RecuperarUsuario.class);
                 startActivity(vista);
             }
         });
