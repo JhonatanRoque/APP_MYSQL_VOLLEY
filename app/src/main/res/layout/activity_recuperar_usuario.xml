@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recuperación de contraseña"
+        android:text="Recuperación de usuario"
         android:textAlignment="center"
         android:textSize="25dp"
         android:textStyle="bold"

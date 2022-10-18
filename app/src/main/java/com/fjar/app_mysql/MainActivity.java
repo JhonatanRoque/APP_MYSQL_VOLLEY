@@ -6,10 +6,12 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.fjar.app_mysql.ui.categorias.CategoriasList;
 import com.fjar.app_mysql.ui.categorias.eliminarcategoria;
 import com.fjar.app_mysql.ui.productos.eliminarProducto;
+import com.fjar.app_mysql.ui.session.DtoUsuario;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private DtoUsuario usuario;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        usuario = new DtoUsuario();
+        usuario.setId(1);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -65,7 +70,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Action", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Action();
+                            }
+                        }).show();
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -115,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void Action (){
+        Toast.makeText(this, "Al presionar el boton", Toast.LENGTH_SHORT).show();
     }
 
 

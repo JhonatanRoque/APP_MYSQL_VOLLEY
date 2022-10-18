@@ -22,6 +22,7 @@ public class InitSession extends AppCompatActivity {
         btnRegistrar = (Button) findViewById(R.id.btnRegistrarse);
         btnIniciar = (Button) findViewById(R.id.btnIngresar);
         btnRecuperarUsuario = (Button) findViewById(R.id.btnRecuperarUsuario);
+        btnRecuperarContrasena = (Button) findViewById(R.id.btnRecuperarContrasena);
 
         //Funcion de los botones
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +43,13 @@ public class InitSession extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent vista = new Intent(InitSession.this, RecuperarUsuario.class);
+                startActivity(vista);
+            }
+        });
+        btnRecuperarContrasena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent vista = new Intent(InitSession.this, RecuperarContrasena.class);
                 startActivity(vista);
             }
         });
