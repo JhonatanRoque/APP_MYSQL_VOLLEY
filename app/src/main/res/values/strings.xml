@@ -15,9 +15,29 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="valorEstado">
-        <item>Seleccione una opción</item>
+        <item>Seleccione una opción para su estado</item>
         <item>1</item>
         <item>0</item>
+    </string-array>
+    <string-array name="valorTipoUsuario">
+        <item>Seleccione su tipo de usuario</item>
+        <item>1 - Administrador</item>
+        <item>2 - Cliente</item>
+        <item>3- Usuario final</item>
+        <item>4- Desarrollador</item>
+        <item>5- Fran</item>
+        <item>6- Freek</item>
+    </string-array>
+    <string-array name="valorPreguntas">
+        <item>Seleccione su pregunta de seguridad</item>
+        <item>¿Nombre de su primer mascota?</item>
+        <item>¿Marca de GPU favorita?</item>
+        <item>¿Fecha de cumpleaños?</item>
+        <item>¿Videojuego favorito?</item>
+        <item>¿Año especial?</item>
+        <item>¿Color favorito?</item>
+        <item>¿Lenguaje de programacion preferido?</item>
+        <item>¿IDE prefereido?</item>
     </string-array>
     <string name="title_activity_session">Session</string>
     <!-- Strings used for fragments for navigation -->
