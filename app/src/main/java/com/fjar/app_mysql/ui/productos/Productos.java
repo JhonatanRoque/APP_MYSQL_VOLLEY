@@ -143,14 +143,6 @@ public class Productos extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*int id = Integer.parseInt(et_id.getText().toString());
-String nombre = et_nombre_prod.getText().toString();
-String descripcion = et_descripcion.getText().toString();
-double stock =
-Double.parseDouble(et_stock.getText().toString());
-double precio =
-Double.parseDouble(et_precio.getText().toString());
-String unidad = et_unidadmedida.getText().toString();*/
                 String id = et_id.getText().toString();
                 String nombre = et_nombre_prod.getText().toString();
                 String descripcion = et_descripcion.getText().toString();

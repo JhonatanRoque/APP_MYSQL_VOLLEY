@@ -1,5 +1,8 @@
 package com.fjar.app_mysql.ui.session;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.fjar.app_mysql.R;
 
@@ -16,6 +21,8 @@ import com.fjar.app_mysql.R;
  * create an instance of this fragment.
  */
 public class Exit extends Fragment {
+    private DtoUsuario usuario = new DtoUsuario();
+    private Button btnSalir;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +68,19 @@ public class Exit extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exit, container, false);
+        View root = inflater.inflate(R.layout.fragment_exit, container, false);
+        btnSalir = (Button) root.findViewById(R.id.btnSalirSession);
+        btnSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sp = getContext().getSharedPreferences("usuario", getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.clear();
+                editor.commit();
+                Intent inicio = new Intent(getContext(), InitSession.class);
+                startActivity(inicio);
+            }
+        });
+        return root;
     }
 }

@@ -1,6 +1,9 @@
 package com.fjar.app_mysql;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import com.fjar.app_mysql.ui.categorias.CategoriasList;
 import com.fjar.app_mysql.ui.categorias.eliminarcategoria;
 import com.fjar.app_mysql.ui.productos.eliminarProducto;
 import com.fjar.app_mysql.ui.session.DtoUsuario;
+import com.fjar.app_mysql.ui.session.InitSession;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -60,7 +64,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         usuario = new DtoUsuario();
-        usuario.setId(1);
+        SharedPreferences sp = getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        String estado = sp.getString("estado", "");
+        if(estado.equals("logON")){
+            if(sp.contains("id")){
+                String id = sp.getString("id", "");
+                usuario.setId(Integer.parseInt(id));
+                if(usuario.getId() > 0){
+                    Toast.makeText(MainActivity.this, "Su id es: " + usuario.getId(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        Toast.makeText(this, "Su estado es: " + estado, Toast.LENGTH_SHORT).show();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -23,7 +23,7 @@
         android:layout_marginTop="10dp"
         >
         <EditText
-            android:id="@+id/et_usuario"
+            android:id="@+id/et_usuarioIS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
@@ -46,7 +46,7 @@
         android:layout_marginTop="10dp"
         >
         <EditText
-            android:id="@+id/et_contraseña"
+            android:id="@+id/et_contrasenaIS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
@@ -60,7 +60,7 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <androidx.appcompat.widget.SwitchCompat
+    <Switch
         android:id="@+id/mantenerSession"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

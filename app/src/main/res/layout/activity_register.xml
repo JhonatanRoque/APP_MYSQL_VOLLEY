@@ -141,7 +141,7 @@
             android:entries="@array/valorTipoUsuario"
             />
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spn_estado"
+            android:id="@+id/spn_estadoRG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"

@@ -44,4 +44,14 @@
         android:name="com.fjar.app_mysql.ui.productos.ModificarProductos"
         android:label="Modificar producto"
         tools:layout="@layout/fragment_modificar_productos" />
+    <fragment
+        android:id="@+id/nav_User"
+        android:name="com.fjar.app_mysql.ui.session.SessionSettings"
+        android:label="Configuración"
+        tools:layout="@layout/fragment_session_settings" />
+    <fragment
+        android:id="@+id/nav_Cerrar_session"
+        android:name="com.fjar.app_mysql.ui.session.Exit"
+        android:label="Cerrar sessión"
+        tools:layout="@layout/fragment_exit" />
 </navigation>
