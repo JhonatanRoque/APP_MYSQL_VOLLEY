@@ -25,7 +25,7 @@ import com.fjar.app_mysql.R;
  */
 public class SessionSettings extends Fragment {
     private UsuarioCRUD CRUD = new UsuarioCRUD();
-    private Button btnActualizar, btnCerrarSession, btnEliminarCuenta;
+    private Button btnCerrarSession, btnEliminarCuenta;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -74,9 +74,13 @@ public class SessionSettings extends Fragment {
         DtoUsuario usuario = new DtoUsuario();
         SharedPreferences sp = getContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String estado = sp.getString("estado", "");
+        String id = sp.getString("id", "");
         if(estado.equals("logON")){
             if(sp.contains("nickName")){
                 String usuarioSP = sp.getString("nickName", "");
+                if(id != ""){
+                    usuario.setId(Integer.parseInt(id));
+                }
                 usuario.setUsuario(usuarioSP);
                 if(usuario.getId() > 0){
                     Toast.makeText(getContext(), "Su usuario es: " + usuario.getUsuario(), Toast.LENGTH_SHORT).show();
@@ -85,7 +89,6 @@ public class SessionSettings extends Fragment {
         }
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_session_settings, container, false);
-        btnActualizar = (Button) root.findViewById(R.id.btnActualizar);
         btnCerrarSession = (Button) root.findViewById(R.id.btnCerrarSession);
         btnEliminarCuenta = (Button) root.findViewById(R.id.btnEliminar);
 
@@ -100,7 +103,12 @@ public class SessionSettings extends Fragment {
                 startActivity(inicio);
             }
         });
-
+        btnEliminarCuenta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CRUD.EliminarCuenta(getContext(), usuario);
+            }
+        });
         CRUD.obtenerDatosSettings(getContext(), usuario, root);
         return root;
     }

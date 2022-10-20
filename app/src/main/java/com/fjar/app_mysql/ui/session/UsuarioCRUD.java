@@ -1,7 +1,10 @@
 package com.fjar.app_mysql.ui.session;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -101,9 +104,10 @@ public class UsuarioCRUD  extends AppCompatActivity{
                             if(mantener.isChecked()){
 
                                 editor.putString("id", id);
-                                editor.putString("nickName", usuario);
+
 
                             }
+                            editor.putString("nickName", usuario);
                             editor.commit();
 
                         }else {
@@ -369,5 +373,57 @@ public class UsuarioCRUD  extends AppCompatActivity{
         };
         Log.e("URL", request.getUrl().toString());
         MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    //Método par eliminar cuenta
+    public void EliminarCuenta(final Context context, DtoUsuario usuario ) {
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/EliminarCuenta.php";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setIcon(R.drawable.ic_delete);
+        builder.setTitle("Warning");
+        builder.setMessage("¿Esta seguro de borrar su cuenta?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject requestJSON = new JSONObject(response.toString());
+                            String estado = requestJSON.getString("estado");
+                            String mensaje = requestJSON.getString("mensaje");
+                            Toast.makeText(context, "" + mensaje, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(context, "No se pudo eliminar la cuenta. \n" +"Intentelo más tarde." + volleyError.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                        Map<String, String> map = new HashMap<>();
+                        map.put("id", String.valueOf(usuario.getId()));
+                        return map;
+                    }
+                };
+                Log.e("URL", request.getUrl().toString());
+                MySingleton.getInstance(context).addToRequestQueue(request);
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();;
+
     }
 }
