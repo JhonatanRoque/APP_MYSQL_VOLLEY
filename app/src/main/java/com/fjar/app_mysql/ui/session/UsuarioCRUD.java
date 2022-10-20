@@ -10,7 +10,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -26,10 +28,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.fjar.app_mysql.MainActivity;
 import com.fjar.app_mysql.MySingleton;
 import com.fjar.app_mysql.R;
+import com.fjar.app_mysql.ui.productos.DtoProductos;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -426,6 +431,60 @@ public class UsuarioCRUD  extends AppCompatActivity{
         });
         AlertDialog dialog = builder.create();
         dialog.show();;
+
+    }
+    //Método para obtener todos los productos
+    public void obtenerUsuariosLista (final Context context, ListView lv) {
+        //Creamos un array en el cual guardaremos cada una de los datos que vendran de nuestra API
+        ArrayList<String> usuarios = new ArrayList<String>();
+
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/obtenerUsuarios.php";
+        StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+                    JSONArray peticionJSON = new JSONArray(response.toString());
+                    usuarios.add("NOMBRE - APELLIDOS - CORREO - USUARIO");
+                    for (int i = 0; i < peticionJSON.length(); i ++){
+                        JSONObject requestJSON = peticionJSON.getJSONObject(i);
+                        DtoUsuario usuariotmp = new DtoUsuario();
+                        String nombre = requestJSON.getString("nombre");
+                        String apellido = requestJSON.getString("apellido");
+                        String correo = requestJSON.getString("correo");
+                        String usuario = requestJSON.getString("usuario");
+                        Log.e("guarda daatos", "si");
+                        //Añadimos los datos a nuestro objeto usuario
+                        usuariotmp.setNombre(nombre);
+                        usuariotmp.setApellido(apellido);
+                        usuariotmp.setCorreo(correo);
+                        usuariotmp.setUsuario(usuario);
+
+                        usuarios.add(usuariotmp.getNombre() + " - " + usuariotmp.getApellido() + " - " + usuariotmp.getCorreo() + " - " + usuariotmp.getUsuario());
+
+                        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, usuarios);
+                        lv.setAdapter(adaptador);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(context, "No se pudo obtener los usuarios \n" +"Intentelo más tarde.", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //En este método se colocan o se setean los valores a recibir por el fichero *.php
+                Map<String, String> map = new HashMap<>();
+                map.put("Content-Type", "application/json; charset=utf-8");
+                map.put("Accept", "application/json");
+                return map;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(request);
 
     }
 }

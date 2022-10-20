@@ -54,6 +54,12 @@
         >
         <menu>
             <item
+                android:id="@+id/nav_UserList"
+                android:icon="@drawable/user"
+                android:title="Usuarios activos "
+                />
+
+            <item
                 android:id="@+id/nav_User"
                 android:icon="@drawable/user"
                 android:title="Configuracioón "

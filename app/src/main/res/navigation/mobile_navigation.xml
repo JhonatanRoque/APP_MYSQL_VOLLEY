@@ -55,4 +55,9 @@
         android:name="com.fjar.app_mysql.ui.session.Exit"
         android:label="Cerrar sessión"
         tools:layout="@layout/fragment_exit" />
+    <fragment
+        android:id="@+id/nav_UserList"
+        android:name="com.fjar.app_mysql.ui.session.ListarUsuarios"
+        android:label="Cerrar sessión"
+        tools:layout="@layout/fragment_listar_usuarios" />
 </navigation>

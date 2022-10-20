@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     tools:context=".ui.session.ListarUsuarios">
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,8 +13,10 @@
         android:layout_height="match_parent"
         android:text="Lista de usuarios activos en la app" />
     <ListView
+        android:id="@+id/lvusuarios"
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_copntent"
+        android:layout_height="wrap_content"
         />
 
 </FrameLayout>
