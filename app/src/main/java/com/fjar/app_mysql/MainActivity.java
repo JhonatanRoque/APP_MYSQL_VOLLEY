@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
         if(estado.equals("logON")){
             if(sp.contains("id")){
                 String id = sp.getString("id", "");
+                String nick = sp.getString("nickName", "");
                 usuario.setId(Integer.parseInt(id));
                 if(usuario.getId() > 0){
-                    Toast.makeText(MainActivity.this, "Su id es: " + usuario.getId(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Su id este: " + usuario.getId(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "su usuario es: " + nick, Toast.LENGTH_SHORT).show();
                 }
             }
         }

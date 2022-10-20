@@ -81,6 +81,8 @@ public class Exit extends Fragment {
                 startActivity(inicio);
             }
         });
+
+
         return root;
     }
 }

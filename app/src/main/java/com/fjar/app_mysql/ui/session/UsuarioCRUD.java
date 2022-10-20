@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fjar.app_mysql.MainActivity;
 import com.fjar.app_mysql.MySingleton;
+import com.fjar.app_mysql.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -247,7 +249,7 @@ public class UsuarioCRUD  extends AppCompatActivity{
 
     //Método para obtener datos indivudual de configuración de cuenta
     public void obtenerDatosSettings(final Context context, DtoUsuario usuario, View vista) {
-        String url = "https://franciscowebtw.000webhostapp.com/service2020/recuperarContrasena.php";
+        String url = "https://franciscowebtw.000webhostapp.com/service2020/obtenerSettingsAccount.php";
         StringRequest request = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -258,11 +260,95 @@ public class UsuarioCRUD  extends AppCompatActivity{
                     String correo = requestJSON.getString("correo");
                     String usuario = requestJSON.getString("usuario");
                     String contrasena = requestJSON.getString("clave");
+                    String tipo = requestJSON.getString("tipo");
                     String estado = requestJSON.getString("estado");
                     String pregunta = requestJSON.getString("pregunta");
                     String respuesta = requestJSON.getString("respuesta");
                     String fecha = requestJSON.getString("fecha_registro");
 
+                    EditText nombretmp = (EditText) vista.findViewById(R.id.et_nombres);
+                    EditText apellidotmp = (EditText) vista.findViewById(R.id.et_apellidos);
+                    EditText usuariotmp = (EditText) vista.findViewById(R.id.et_usuario);
+                    EditText correotmp = (EditText) vista.findViewById(R.id.et_correo);
+                    EditText clave = (EditText) vista.findViewById(R.id.et_contrasena);
+                    EditText respuestatmp = (EditText) vista.findViewById(R.id.et_respuesta);
+                    Spinner tipoUsuario = (Spinner) vista.findViewById(R.id.spn_tipoUsuario);
+                    Spinner estadotmp = (Spinner) vista.findViewById(R.id.spn_estado);
+                    Spinner preguntatmp = (Spinner) vista.findViewById(R.id.spn_pregunta);
+                    TextView fechaRG = (TextView) vista.findViewById(R.id.tv_fechaRegistro);
+
+                    //Asignar valores
+                    nombretmp.setText(nombre);
+                    apellidotmp.setText(apellido);
+                    usuariotmp.setText(usuario);
+                    correotmp.setText(correo);
+                    clave.setText(contrasena);
+                    respuestatmp.setText(respuesta);
+                    switch(tipo){
+                        case "1":
+                            tipoUsuario.setSelection(1);
+                            break;
+                        case "2":
+                            tipoUsuario.setSelection(2);
+                            break;
+                        case "3":
+                            tipoUsuario.setSelection(3);
+                            break;
+                        case "4":
+                            tipoUsuario.setSelection(4);
+                            break;
+                        case "5":
+                            tipoUsuario.setSelection(5);
+                            break;
+                        case "6":
+                            tipoUsuario.setSelection(6);
+                            break;
+                        default:
+                            tipoUsuario.setSelection(0);
+                            break;
+                    }
+                    switch(estado){
+                        case "1":
+                            estadotmp.setSelection(1);
+                            break;
+                        case "0":
+                            estadotmp.setSelection(2);
+                            break;
+                        default:
+                            estadotmp.setSelection(0);
+                            break;
+                    }
+                    switch(pregunta){
+                        case "¿Nombre de su primer mascota?":
+                            preguntatmp.setSelection(1);
+                            break;
+                        case "¿Marca de GPU favorita?":
+                            preguntatmp.setSelection(2);
+                            break;
+                        case "¿Fecha de cumpleaños?":
+                            preguntatmp.setSelection(3);
+                            break;
+                        case "¿Videojuego favorito?":
+                            preguntatmp.setSelection(4);
+                            break;
+                        case "¿Año especial?":
+                            preguntatmp.setSelection(5);
+                            break;
+                        case "¿Color favorito?":
+                            preguntatmp.setSelection(6);
+                            break;
+                        case "¿Lenguaje de programacion favorito?":
+                            preguntatmp.setSelection(7);
+                            break;
+                        case "¿IDE preferido?":
+                            preguntatmp.setSelection(8);
+                            break;
+                        default:
+                            preguntatmp.setSelection(0);
+                            break;
+
+                    }
+                    fechaRG.setText(fecha);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -271,7 +357,7 @@ public class UsuarioCRUD  extends AppCompatActivity{
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(context, "No se pudo encontrar la contrasena de la cuenta. \n" +"Intentelo más tarde." + volleyError.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No se pudo encontrar la configuración. \n" +"Intentelo más tarde." + volleyError.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             protected Map<String, String> getParams() throws AuthFailureError {

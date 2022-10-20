@@ -1,5 +1,7 @@
 package com.fjar.app_mysql.ui.session;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +9,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.fjar.app_mysql.MainActivity;
 import com.fjar.app_mysql.R;
 
 /**
@@ -16,6 +22,8 @@ import com.fjar.app_mysql.R;
  * create an instance of this fragment.
  */
 public class SessionSettings extends Fragment {
+    UsuarioCRUD CRUD = new UsuarioCRUD();
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +68,21 @@ public class SessionSettings extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        DtoUsuario usuario = new DtoUsuario();
+        SharedPreferences sp = getContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        String estado = sp.getString("estado", "");
+        if(estado.equals("logON")){
+            if(sp.contains("nickName")){
+                String usuarioSP = sp.getString("nickName", "");
+                usuario.setUsuario(usuarioSP);
+                if(usuario.getId() > 0){
+                    Toast.makeText(getContext(), "Su usuario es: " + usuario.getUsuario(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_session_settings, container, false);
+        View root = inflater.inflate(R.layout.fragment_session_settings, container, false);
+        CRUD.obtenerDatosSettings(getContext(), usuario, root);
+        return root;
     }
 }
