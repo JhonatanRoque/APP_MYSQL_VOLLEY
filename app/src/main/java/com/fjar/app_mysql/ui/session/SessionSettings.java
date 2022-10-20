@@ -1,6 +1,7 @@
 package com.fjar.app_mysql.ui.session;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +24,8 @@ import com.fjar.app_mysql.R;
  * create an instance of this fragment.
  */
 public class SessionSettings extends Fragment {
-    UsuarioCRUD CRUD = new UsuarioCRUD();
+    private UsuarioCRUD CRUD = new UsuarioCRUD();
+    private Button btnActualizar, btnCerrarSession, btnEliminarCuenta;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -82,6 +85,22 @@ public class SessionSettings extends Fragment {
         }
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_session_settings, container, false);
+        btnActualizar = (Button) root.findViewById(R.id.btnActualizar);
+        btnCerrarSession = (Button) root.findViewById(R.id.btnCerrarSession);
+        btnEliminarCuenta = (Button) root.findViewById(R.id.btnEliminar);
+
+        btnCerrarSession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sp = getContext().getSharedPreferences("usuario", getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.clear();
+                editor.commit();
+                Intent inicio = new Intent(getContext(), InitSession.class);
+                startActivity(inicio);
+            }
+        });
+
         CRUD.obtenerDatosSettings(getContext(), usuario, root);
         return root;
     }
