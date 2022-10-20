@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         usuario = new DtoUsuario();
         SharedPreferences sp = getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String estado = sp.getString("estado", "");
+
         if(estado.equals("logON")){
             if(sp.contains("id")){
                 String id = sp.getString("id", "");
@@ -76,11 +77,23 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "su usuario es: " + nick, Toast.LENGTH_SHORT).show();
                 }
             }
+            if(sp.contains("tipo")){
+                String tipo = sp.getString("tipo", "");
+                usuario.setTipo(Integer.parseInt(tipo));
+                Toast.makeText(this, "Su tipo de usuario es: " + usuario.getTipo(), Toast.LENGTH_SHORT).show();
+            }
         }
         Toast.makeText(this, "Su estado es: " + estado, Toast.LENGTH_SHORT).show();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if(usuario.getTipo() > 1){
+            navigationView.getMenu().findItem(R.id.nav_categoria).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_ModCategoria).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_producto).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_ModProducto).setVisible(false);
+        }
 
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }

@@ -93,6 +93,7 @@ public class UsuarioCRUD  extends AppCompatActivity{
                     if(requestJSON.has("mensaje") == false){
                         String id = requestJSON.getString("id");
                         String usuario = requestJSON.getString("usuario");
+                        String tipo = requestJSON.getString("tipo");
 
                         if(id.length() > 0){
                             Toast.makeText(context, "¡Bienvenido!", Toast.LENGTH_SHORT).show();
@@ -108,6 +109,7 @@ public class UsuarioCRUD  extends AppCompatActivity{
 
                             }
                             editor.putString("nickName", usuario);
+                            editor.putString("tipo", tipo);
                             editor.commit();
 
                         }else {

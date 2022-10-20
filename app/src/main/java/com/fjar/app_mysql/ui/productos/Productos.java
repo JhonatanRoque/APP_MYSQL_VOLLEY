@@ -119,13 +119,8 @@ public class Productos extends Fragment {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if(conta>=1 && sp_fk_categoria.getSelectedItemPosition()>0){
                             String item_spinner = sp_fk_categoria.getSelectedItem().toString();
-//Hago una busqueda en la cadena seleccionada en el spinner para separar el idcategoria y el nombre de la categoria
-//Esto es necesario, debido a que lo que debe enviarse a guardar a la base de datos es únicamente el idcategoria.
-                            String s[] = item_spinner.split("~");
-//Dato ID CATEGORIA
+                            String s[] = item_spinner.split("-");
                             idcategoria = s[0].trim();
-//Con trim elimino espacios al inicio y final de la cadena para enviar limpio el ID CATEGORIA.
-//Dato NOMBRE DE LA CATEGORIA
                             nombrecategoria = s[1];
                             Toast toast = Toast.makeText(getContext(), "Id cat: " + idcategoria + "\n" + "Nombre Categoria: "+nombrecategoria, Toast.LENGTH_SHORT);
                                                                               toast.setGravity(Gravity.CENTER, 0, 0);
