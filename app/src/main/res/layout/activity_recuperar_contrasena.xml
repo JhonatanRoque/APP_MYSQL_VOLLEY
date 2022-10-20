@@ -92,8 +92,7 @@
             android:inputType="text"
             android:paddingLeft="1dp"
             android:textColor="#03168B"
-            android:textSize="14dp"
-            android:enabled="false"/>
+            android:textSize="14dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
     <androidx.appcompat.widget.AppCompatButton
@@ -104,5 +103,26 @@
         android:textSize="14dp"
         android:text="Recuperar"
         />
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:id="@+id/resultado2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Su contraseña es: "
+            android:textSize="24dp"
+            />
+        <TextView
+            android:id="@+id/tvcontrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="xxxxxxxxxxxx"
+            android:textSize="24dp"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
